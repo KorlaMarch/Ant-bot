@@ -1,9 +1,9 @@
 CC=g++
-CFLAGS=-O3 -std=c++11 -funroll-loops -c
+CFLAGS=-O3 -funroll-loops -c
 LDFLAGS=-O2 -lm
-SOURCES=Bot.cc MyBot.cc State.cc Gather.cc Soldier.cc
+SOURCES=Bot.cc MyBot.cc State.cc
 OBJECTS=$(addsuffix .o, $(basename ${SOURCES}))
-EXECUTABLE=MyBot.exe
+EXECUTABLE=MyBot
 
 #Uncomment the following to enable debugging
 #CFLAGS+=-g -DDEBUG
@@ -17,8 +17,8 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
-	-del /F ${EXECUTABLE} ${OBJECTS} *.d
-	-del /F debug.txt
+	-rm -f ${EXECUTABLE} ${OBJECTS} *.d
+	-rm -f debug.txt
 
 .PHONY: all clean
 

@@ -45,18 +45,7 @@ void State::makeMove(const Location &loc, int direction)
     grid[nLoc.row][nLoc.col].ant = grid[loc.row][loc.col].ant;
     grid[loc.row][loc.col].ant = -1;
 };
-double State::distanceX(const Location &loc1, const Location &loc2)
-{
-    int d1 = loc1.row-loc2.row,
-        dr = abs(d1)<=rows-abs(d1)?abs(d1):-d1/abs(d1)*(rows-abs(d1));
-    return dr;
-};
-double State::distanceY(const Location &loc1, const Location &loc2)
-{
-    int d2 = loc1.col-loc2.col,
-        dc = abs(d2)<=cols-abs(d2)?abs(d2):-d2/abs(d2)*(cols-abs(d2));
-    return dc;
-};
+
 //returns the euclidean distance between two locations with the edges wrapped
 double State::distance(const Location &loc1, const Location &loc2)
 {

@@ -57,8 +57,6 @@ struct State
 
     void makeMove(const Location &loc, int direction);
 
-    double distanceX(const Location &loc1, const Location &loc2);
-    double distanceY(const Location &loc1, const Location &loc2);
     double distance(const Location &loc1, const Location &loc2);
     Location getLocation(const Location &startLoc, int direction);
 
