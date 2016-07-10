@@ -67,6 +67,22 @@ Location State::getLocation(const Location &loc, int direction)
 Square& State::getGrid(const Location &loc) {
     return grid[ loc.row ][ loc.col ];
 }
+
+void State::updateAnts(void) {
+    
+    // remove all dead ants
+    for ( Role*& ant : myAntsWithRoles ) {
+        if ( getGrid( ant->getLocation() ).ant != 0 ) {
+            ant->die();
+        }
+    }
+
+    for ( auto & ant : myAntsWithRoles ) {
+
+    }
+
+}
+
 /*
     This function will update update the lastSeen value for any squares currently
     visible by one of your live ants.
@@ -265,6 +281,8 @@ istream& operator>>(istream &is, State &state)
             else //unknown line
                 getline(is, junk);
         }
+
+        updateAnts();
     }
 
     return is;
