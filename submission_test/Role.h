@@ -5,9 +5,14 @@
 
 struct Role{
     State& state;
-    Role(State _state) : state(_state) {}
-    virtual void move(Location loc) = 0;
+    int x,y;
+    Role(State _state, int _id = 0, int _x = 0, int _y = 0) : state(_state), id(_id), x(_x), y(_y) {}
+    int getID(){
+        return id;
+    }
+    virtual void move() = 0;
     private:
+        //changing id is impossible
         int id;
 };
 
