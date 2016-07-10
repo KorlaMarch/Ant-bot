@@ -3,7 +3,8 @@
 
 #include "State.h"
 
-struct Role{
+class Role{
+    public:
     State& state;
     int x,y;
     Role(State _state, int _id = 0, int _x = 0, int _y = 0) : state(_state), id(_id), x(_x), y(_y) {}
