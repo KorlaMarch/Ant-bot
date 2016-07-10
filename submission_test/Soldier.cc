@@ -1,6 +1,6 @@
 #include "Role.h"
 
-class Gather : public Role{
+class Soldier : public Role{
 
 
 };

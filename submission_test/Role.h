@@ -11,7 +11,7 @@ class Role{
     int getID(){
         return id;
     }
-    virtual void move() = 0;
+    virtual int move() = 0;
     private:
         //changing id is impossible
         int id;
