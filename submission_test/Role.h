@@ -2,8 +2,8 @@
 #ifndef ROLE_H_
 #define ROLE_H_
 
-#include "State.h"
 #include "Location.h"
+#include "State.h"
 
 #include <vector>
 
@@ -45,7 +45,7 @@ public:
 
     	int dir = move();
 
-    	if ( 0 < dir and dir < TDIRECTION ) {
+    	if ( 0 < dir and dir < TDIRECTIONS ) {
 
     		x += DIRECTIONS[dir][0];
     		y += DIRECTIONS[dir][1];
@@ -60,7 +60,7 @@ public:
     void die(void) {
     	Dead = true;
     }
-    
+
     // return the status of the ant
     bool isDead(void) const {
     	return Dead;
@@ -81,5 +81,6 @@ public:
 
 };
 
+std::vector< std::unique_ptr<Role*> > myAntsWithRoles;
 
 #endif

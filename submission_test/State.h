@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <memory>
 #include <stack>
 #include <stdint.h>
 
@@ -16,7 +17,7 @@
 #include "Square.h"
 #include "Location.h"
 
-// forward declaration for roles
+// forward declearation
 class Role;
 
 /*
@@ -46,8 +47,6 @@ struct State
     std::vector<std::vector<Square> > grid;
     std::vector<Location> myAnts, enemyAnts, myHills, enemyHills, food;
 
-    std::vector< Role* > myAntsWithRoles;
-
     Timer timer;
     Bug bug;
 
@@ -67,7 +66,6 @@ struct State
     Square& getGrid(const Location &loc);
     Location getLocation(const Location &startLoc, int direction);
 
-    void updateAnts();
     void updateVisionInformation();
 };
 
