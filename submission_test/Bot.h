@@ -2,20 +2,31 @@
 #define BOT_H_
 
 #include "MyState.h"
+#include "Location.h"
+#include "Role.h"
 
-/*
-    This struct represents your bot in the game of Ants
-*/
-struct Bot
+#include <memory>
+
+// forward declaration
+class MyState;
+class Role;
+
+class Bot
 {
-    MyState state;
+public:
 
-    Bot();
-
+    std::unique_ptr< MyState* > mystate;
+    
     void playGame();    //plays a single game of Ants
 
     void makeMoves();   //makes moves for a single turn
     void endTurn();     //indicates to the engine that it has made its moves
+
+    MyState& state(void);
+
+    virtual Role* createAnt( const Location ); // virtual functions for adding more ants
+
+    Bot(void);
 };
 
 #endif //BOT_H_
