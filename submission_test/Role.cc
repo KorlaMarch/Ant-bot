@@ -7,6 +7,9 @@
 #include <memory>
 
 void Role::die( void ) {
+	if ( not Dead ) {
+		state().antDie( getID() );
+	}
 	Dead = true;
 }
 bool Role::isDead( void ) const {

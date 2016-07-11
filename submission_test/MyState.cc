@@ -6,12 +6,25 @@
 #include <algorithm>
 #include <memory>
 
-// MyState function
-Role& MyState::getAnt( const int id ) {
+// helper functions
+void MyState::antDie( int AntId ) {
+	// AntId just die
+	if ( not getAnt( AntId ).isDead() ) {
+		antCnt--;
+	}
+}
+Role& MyState::getAnt( const int id ) const {
 	return **myAntsWithRoles[id];
 }
-Role& MyState::getAnt( const rolePtr& ant ) {
+Role& MyState::getAnt( const rolePtr& ant ) const {
 	return **ant;
+}
+Square& MyState::getGrid(const Location &loc) {
+    return grid[ loc.row ][ loc.col ];
+}
+
+int MyState::getAntSize( void ) const {
+	return antCnt;
 }
 
 void MyState::setup()
@@ -74,10 +87,10 @@ void MyState::updateState( void ) {
 	for( const Location& hill : myHills ) {
 		if( getGrid( hill ).ant != 0 ) {
 			// new ant found
-			Role *newAnt = MyBot.createAnt( hill );
-			myAntsWithRoles.push_back( rolePtr ( &newAnt ) );
+			myAntsWithRoles.push_back( rolePtr( new Role*( new Role( MyBot.createAnt( antMaxID++, hill ) ) ) ) );
+			antCnt++;
 		}
 	}
 }
 
-MyState::MyState( Bot &mybot ) : MyBot( mybot ) {}
+MyState::MyState( Bot &mybot ) : MyBot( mybot ), antCnt(0), antMaxID(0) {}

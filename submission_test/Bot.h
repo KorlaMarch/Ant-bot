@@ -16,7 +16,7 @@ class Bot
 public:
 
     std::unique_ptr< MyState* > mystate;
-
+    
     void playGame();    //plays a single game of Ants
 
     void makeMoves();   //makes moves for a single turn
@@ -24,7 +24,7 @@ public:
 
     MyState& state(void);
 
-    virtual Role* createAnt( const Location ); // virtual functions for adding more ants
+    virtual Role& createAnt( int ntId, const Location ); // virtual functions for adding more ants
 
     Bot(void);
 };

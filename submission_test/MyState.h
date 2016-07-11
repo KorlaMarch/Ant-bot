@@ -18,10 +18,10 @@ private:
 	Bot& MyBot;
 	typedef std::unique_ptr< Role* > rolePtr;
 
-public:
-
 	int antCnt;
     int antMaxID;
+
+public:
 
 	// the ants
 	std::vector< std::vector< int > > gridToAnt;
@@ -35,13 +35,15 @@ public:
     
 	// update functions	
 	void updateState(void);
-
-    rolePtr createAnt(void);
     
     // helper functions
-    Role& getAnt( const int );
-    Role& getAnt( const rolePtr& );
+    void antDie( int AntId );
 
+    int getAntSize( void ) const;
+    Role& getAnt( const int ) const ;
+    Role& getAnt( const rolePtr& ) const;
+    Square& getGrid(const Location &loc);
+    
     // constructor
     MyState( Bot& );
 };

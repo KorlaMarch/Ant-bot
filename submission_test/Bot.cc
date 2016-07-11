@@ -3,10 +3,8 @@
 using namespace std;
 
 //constructor
-Bot::Bot() 
+Bot::Bot() : mystate ( new MyState*( new MyState( *this ) ) )
 {
-    MyState *ptr = new MyState( *this );
-    mystate = unique_ptr< MyState* >( &ptr );
 };
 
 MyState& Bot::state( void ) {
@@ -54,7 +52,7 @@ void Bot::makeMoves()
     state().bug << "time taken: " << state().timer.getTime() << "ms" << endl << endl;
 };
 
-Role* Bot::createAnt( const Location loc ) {
+Role& Bot::createAnt( int antId, const Location loc ) {
 
 }
 //finishes the turn
