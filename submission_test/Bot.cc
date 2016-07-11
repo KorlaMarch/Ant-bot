@@ -5,8 +5,7 @@ using namespace std;
 //constructor
 Bot::Bot() 
 {
-    MyState *ptr = new MyState( *this );
-    mystate = unique_ptr< MyState* >( &ptr );
+    mystate = unique_ptr< MyState* >( new MyState*( new MyState( *this ) ) );
 };
 
 MyState& Bot::state( void ) {
