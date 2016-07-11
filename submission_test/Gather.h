@@ -5,23 +5,23 @@
 #include "queue"
 #include "array"
 #include "math.h"
+#include ""
 
 class Gather : public Role{
     public:
         int anchorX, anchorY;
-
-        Gather(State _state, int _id = 0, int _x = 0, int _y = 0, int _anchorX = 0, int _anchorY = 0) : Role(State _state, _id, _x, _y){
-            anchorX = _anchorX;
-            anchorY = _anchorY;
-            dis(state.rows,std::vector<int>(state.cols,-1));
-        }
-
         bool isFarmZone(Location loc);
-
+        //left and topmost location of farmzone
+        Location LeftTop;
     private:
-        
-        std::vector<std::vector<int> > dis;
+    	//Dis ==> vector with offset to speed up and save memory
+    	std::vector<std::vector<int> > dis;
+    	int disOffX, disOffY;
 
+    	void clearDis(int offX, int offY, int rsize, int csize);
+    	Location getDisIndex(Location loc)
+    	int getDis(Location loc);
+    	void setDis(Location loc, int v);
         bool bfs_checkLoc(Location loc);
         void bfs(int x, int y, int d);
 };
