@@ -18,7 +18,9 @@ Location Role::getLocation( void ) const {
 int Role::getID( void ) const {
 	return id;
 }
-
+MyState& Role::state(void) {
+	return mystate;
+}
 void Role::run( void ) {
 
 	int dir = move();
@@ -28,8 +30,8 @@ void Role::run( void ) {
 		x += DIRECTIONS[dir][0];
 		y += DIRECTIONS[dir][1];
 
-    	state.makeMove( getLocation(), dir );
+    	state().makeMove( getLocation(), dir );
 	}
 }
 
-Role::Role(State _state, int _id, int _x, int _y) : state(_state), id(_id), x(_x), y(_y), Dead( false ) {}
+Role::Role( MyState _state, int _id, int _x, int _y) : mystate(_state), id(_id), x(_x), y(_y), Dead( false ) {}
