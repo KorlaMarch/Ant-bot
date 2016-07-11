@@ -67,6 +67,7 @@ Location State::getLocation(const Location &loc, int direction)
 Square& State::getGrid(const Location &loc) {
     return grid[ loc.row ][ loc.col ];
 }
+
 /*
     This function will update update the lastSeen value for any squares currently
     visible by one of your live ants.

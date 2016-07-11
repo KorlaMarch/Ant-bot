@@ -1,7 +1,7 @@
 CC=g++
-CFLAGS=-O3 -funroll-loops -c
-LDFLAGS=-O2 -lm
-SOURCES=Bot.cc MyBot.cc State.cc
+CFLAGS=-O3 -std=c++11 -funroll-loops -c
+LDFLAGS=-O2 -std=c++11 -lm
+SOURCES=Bot.cc MyBot.cc Role.cc MyState.cc State.cc
 OBJECTS=$(addsuffix .o, $(basename ${SOURCES}))
 EXECUTABLE=MyBot
 
