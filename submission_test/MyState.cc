@@ -1,5 +1,7 @@
 #include "MyState.h"
 #include "Role.h"
+#include "Bot.h"
+#include "Square.h"
 
 #include <algorithm>
 #include <memory>
@@ -10,6 +12,18 @@ Role& MyState::getAnt( const int id ) {
 }
 Role& MyState::getAnt( const rolePtr& ant ) {
 	return **ant;
+}
+
+void MyState::setup()
+{
+    grid = std::vector< std::vector<Square> >(rows, std::vector<Square>(cols, Square()));
+    gridToAnt = std::vector< std::vector<int> >(rows, std::vector<int>(cols, -1) );
+}
+
+void MyState::run( void ) {
+	for ( const auto& antPtr : myAntsWithRoles ) {
+		getAnt( antPtr ).run();
+	}
 }
 
 void MyState::updateState( void ) {
@@ -40,25 +54,30 @@ void MyState::updateState( void ) {
 			return distance( ant.getLocation(), ant1.getLocation() ) < distance( ant.getLocation(), ant2.getLocation() );
 		});
 
+		// remove out-of-range ants and dead ants
 		while ( !vec.empty() ) {
 
-			auto &ant = getAnt( vec.back() );
+			auto &concerned_ant = getAnt( vec.back() );
+
 			if ( getAnt( vec.back() ).isDead() ) {
 				vec.pop_back();
+			} else if ( distance( ant.getLocation(), concerned_ant.getLocation() ) > viewradius ) {
+				vec.pop_back();
+			} else {
+				break;
 			}
-
-			// if ( distance( ant, ))
 		}
+
+
 	}
 
 	for( const Location& hill : myHills ) {
 		if( getGrid( hill ).ant != 0 ) {
 			// new ant found
-			myAntsWithRoles.push_back( createAnt() );
+			Role *newAnt = MyBot.createAnt( hill );
+			myAntsWithRoles.push_back( rolePtr ( &newAnt ) );
 		}
 	}
 }
 
-std::unique_ptr< Role* > MyState::createAnt(void) {
-
-}
+MyState::MyState( Bot &mybot ) : MyBot( mybot ) {}

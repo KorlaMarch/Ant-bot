@@ -3,23 +3,28 @@
 #define ROLE_H_
 
 #include "Location.h"
-#include "State.h"
+#include "MyState.h"
+#include "Bot.h"
 
 #include <vector>
 #include <memory>
+
+// forward declaration
+class MyState;
+class Bot;
 
 // this class is partial abstract
 class Role {
 
 public:
-
-    // reference to the main state
-    State& state;
-
+    
     // neighbors
     std::vector<int> neighbors;
 
 private:
+
+    // reference to the main state
+    MyState& mystate;
 
     // check whether the ant is dead
     bool Dead;
@@ -48,6 +53,7 @@ public:
     void run(void);
 
     // helper functions
+    MyState& state(void);
 
     // terminate function
     void die(void); 
@@ -62,7 +68,7 @@ public:
     int getID() const;
 
     // constructor
-    Role(State _state, int _id = 0, int _x = 0, int _y = 0);
+    Role( MyState _state, int _id = 0, int _x = 0, int _y = 0);
 };
 
 #endif

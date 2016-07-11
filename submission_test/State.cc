@@ -184,18 +184,18 @@ istream& operator>>(istream &is, State &state)
                 is >> state.seed;
             else if(inputType == "viewradius2")
             {
-                is >> state.viewradius;
-                state.viewradius = sqrt(state.viewradius);
+                is >> state.viewradius2;
+                state.viewradius = sqrt(state.viewradius2);
             }
             else if(inputType == "attackradius2")
             {
-                is >> state.attackradius;
-                state.attackradius = sqrt(state.attackradius);
+                is >> state.attackradius2;
+                state.attackradius = sqrt(state.attackradius2);
             }
             else if(inputType == "spawnradius2")
             {
-                is >> state.spawnradius;
-                state.spawnradius = sqrt(state.spawnradius);
+                is >> state.spawnradius2;
+                state.spawnradius = sqrt(state.spawnradius2);
             }
             else if(inputType == "ready") //end of parameter input
             {

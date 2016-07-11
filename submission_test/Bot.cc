@@ -3,23 +3,28 @@
 using namespace std;
 
 //constructor
-Bot::Bot()
+Bot::Bot() 
 {
-
+    MyState *ptr = new MyState( *this );
+    mystate = unique_ptr< MyState* >( &ptr );
 };
+
+MyState& Bot::state( void ) {
+    return **mystate;
+}
 
 //plays a single game of Ants.
 void Bot::playGame()
 {
     //reads the game parameters and sets up
-    cin >> state;
-    state.setup();
+    cin >> state();
+    state().setup();
     endTurn();
 
     //continues making moves while the game is not over
-    while(cin >> state)
+    while(cin >> state())
     {
-        state.updateVisionInformation();
+        state().updateVisionInformation();
         makeMoves();
         endTurn();
     }
@@ -28,33 +33,36 @@ void Bot::playGame()
 //makes the bots moves for the turn
 void Bot::makeMoves()
 {
-    state.bug << "turn " << state.turn << ":" << endl;
-    state.bug << state << endl;
+    state().bug << "turn " << state().turn << ":" << endl;
+    state().bug << state() << endl;
 
     //picks out moves for each ant
-    for(int ant=0; ant<(int)state.myAnts.size(); ant++)
+    for(int ant=0; ant<(int)state().myAnts.size(); ant++)
     {
         for(int d=0; d<TDIRECTIONS; d++)
         {
-            Location loc = state.getLocation(state.myAnts[ant], d);
+            Location loc = state().getLocation(state().myAnts[ant], d);
 
-            if(!state.grid[loc.row][loc.col].isWater)
+            if(!state().grid[loc.row][loc.col].isWater)
             {
-                state.makeMove(state.myAnts[ant], d);
+                state().makeMove(state().myAnts[ant], d);
                 break;
             }
         }
     }
 
-    state.bug << "time taken: " << state.timer.getTime() << "ms" << endl << endl;
+    state().bug << "time taken: " << state().timer.getTime() << "ms" << endl << endl;
 };
 
+Role* Bot::createAnt( const Location loc ) {
+
+}
 //finishes the turn
 void Bot::endTurn()
 {
-    if(state.turn > 0)
-        state.reset();
-    state.turn++;
+    if(state().turn > 0)
+        state().reset();
+    state().turn++;
 
     cout << "go" << endl;
 };
