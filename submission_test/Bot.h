@@ -1,14 +1,14 @@
 #ifndef BOT_H_
 #define BOT_H_
 
-#include "State.h"
+#include "MyState.h"
 
 /*
     This struct represents your bot in the game of Ants
 */
 struct Bot
 {
-    State state;
+    MyState state;
 
     Bot();
 

@@ -6,6 +6,7 @@
 #include "State.h"
 
 #include <vector>
+#include <memory>
 
 // this class is partial abstract
 class Role {
@@ -39,48 +40,32 @@ public:
 	}
 
 	// action move
-    virtual int move() = 0;
-    
-    void run(void) {
-
-    	int dir = move();
-
-    	if ( 0 < dir and dir < TDIRECTIONS ) {
-
-    		x += DIRECTIONS[dir][0];
-    		y += DIRECTIONS[dir][1];
-
-	    	state.makeMove( getLocation(), dir );
-    	}
+    virtual int move() {
+    	// move north by default
+    	return 0;
     }
+    
+    void run(void);
 
     // helper functions
 
     // terminate function
-    void die(void) {
-    	Dead = true;
-    }
+    void die(void); 
 
     // return the status of the ant
-    bool isDead(void) const {
-    	return Dead;
-    }
+    bool isDead(void) const;
 
     // return location of the ant
-    Location getLocation(void) const {
-    	return Location( x, y );
-    }
+    Location getLocation(void) const;
 
     // return the id of the ant
-    int getID() const {
-        return id;
-    }
+    int getID() const;
 
     // constructor
-    Role(State _state, int _id = 0, int _x = 0, int _y = 0) : state(_state), id(_id), x(_x), y(_y), Dead( false ) {}
+    Role(State _state, int _id = 0, int _x = 0, int _y = 0);
 
 };
 
-std::vector< std::unique_ptr<Role*> > myAntsWithRoles;
+
 
 #endif

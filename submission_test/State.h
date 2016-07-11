@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include <queue>
-#include <memory>
 #include <stack>
 #include <stdint.h>
 
@@ -16,9 +15,6 @@
 #include "Bug.h"
 #include "Square.h"
 #include "Location.h"
-
-// forward declearation
-class Role;
 
 /*
     constants
