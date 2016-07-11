@@ -44,7 +44,6 @@ public:
         // move north by default
         return 0;
     }
-<<<<<<< HEAD
     
     void run(void);
 
