@@ -42,6 +42,7 @@ class Gather : public Role{
                     {
                         dis[newloc.row][newloc.col] = newd;
                         qu.push(newloc);
+                        printf("TEST\n");
                     }
                 }
             }
