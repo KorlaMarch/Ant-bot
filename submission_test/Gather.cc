@@ -37,6 +37,7 @@ bool Gather::isFarmZone(Location loc){
 }
 
 int Gather::move(){
+    return bfsFood(getLocation());
 }
 
 //check if loc is suitable to bfs to
