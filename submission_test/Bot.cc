@@ -22,7 +22,7 @@ void Bot::playGame()
     //continues making moves while the game is not over
     while(cin >> state())
     {
-        state().updateVisionInformation();
+        state().updateState();
         makeMoves();
         endTurn();
     }

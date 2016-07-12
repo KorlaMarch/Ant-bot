@@ -37,13 +37,13 @@ public:
 	void updateState(void);
     
     // helper functions
-    void antDie( int AntId );
+    void antDie( int antID );
 
     int getAntSize( void ) const;
     Role& getAnt( const int ) const ;
     Role& getAnt( const rolePtr& ) const;
     Square& getGrid(const Location &loc);
-    
+
     // constructor
     MyState( Bot& );
 };
