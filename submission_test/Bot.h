@@ -24,7 +24,7 @@ public:
 
     MyState& state(void);
 
-    virtual Role& createAnt( int ntId, const Location ); // virtual functions for adding more ants
+    virtual Role* createAnt( int antID, const Location ); // virtual functions for adding more ants
 
     Bot(void);
 };

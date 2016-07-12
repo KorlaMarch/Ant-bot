@@ -26,14 +26,18 @@ MyState& Role::state(void) {
 }
 void Role::run( void ) {
 
+	if ( isDead() ) return;
+
 	int dir = move();
 
-	if ( 0 < dir and dir < TDIRECTIONS ) {
+	if ( 0 <= dir and dir < TDIRECTIONS ) {
 
-		x += DIRECTIONS[dir][0];
-		y += DIRECTIONS[dir][1];
-
-    	state().makeMove( getLocation(), dir );
+		const Location nwloc = state().getLocation( getLocation(), dir );
+		if ( state().isGridEmpty( nwloc ) ) {		
+	    	state().makeMove( getLocation(), dir );
+	    	x = nwloc.row;
+	    	y = nwloc.col;
+		}
 	}
 }
 

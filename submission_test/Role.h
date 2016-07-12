@@ -39,15 +39,15 @@ public:
 
     // -- virtual functions that will be implemented separately
     
-    // communicate
+    // communicate with other ants
     virtual void receive ( int msg ) {
         // do nothing
     }
 
     // action move
     virtual int move() {
-        // move north by default
-        return 0;
+        // move east by default
+        return 1;
     }
     
     void run(void);

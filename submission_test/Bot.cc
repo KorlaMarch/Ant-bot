@@ -1,4 +1,5 @@
 #include "Bot.h"
+#include "Gather.h"
 
 using namespace std;
 
@@ -33,27 +34,12 @@ void Bot::makeMoves()
 {
     state().bug << "turn " << state().turn << ":" << endl;
     state().bug << state() << endl;
-
-    //picks out moves for each ant
-    for(int ant=0; ant<(int)state().myAnts.size(); ant++)
-    {
-        for(int d=0; d<TDIRECTIONS; d++)
-        {
-            Location loc = state().getLocation(state().myAnts[ant], d);
-
-            if(!state().grid[loc.row][loc.col].isWater)
-            {
-                state().makeMove(state().myAnts[ant], d);
-                break;
-            }
-        }
-    }
-
+    state().run();
     state().bug << "time taken: " << state().timer.getTime() << "ms" << endl << endl;
 };
 
-Role& Bot::createAnt( int antId, const Location loc ) {
-
+Role* Bot::createAnt( int antID, const Location loc ) {
+    return new Gather( state(), antID, loc.row, loc.col, loc.row, loc.col );
 }
 //finishes the turn
 void Bot::endTurn()

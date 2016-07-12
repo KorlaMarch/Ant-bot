@@ -27,10 +27,13 @@ bool MyState::isAnt( const Location loc ) const {
 	return gridToAnt[ loc.row ][ loc.col ] != -1;
 }
 
-Square& MyState::getGrid(const Location &loc) {
+Square& MyState::getGrid(const Location loc) {
     return grid[ loc.row ][ loc.col ];
 }
-
+bool MyState::isGridEmpty(const Location loc ) {
+	const auto &grid = getGrid( loc );
+	return ( not grid.isWater ) and ( grid.ant == -1 ) and ( not grid.isHill );
+}
 int MyState::getAntSize( void ) const {
 	return antCnt;
 }
@@ -49,7 +52,20 @@ void MyState::run( void ) {
 
 void MyState::updateState( void ) {
 
+	bug << "updateState()" << std::endl;
+	
 	updateVisionInformation();
+
+	for( const Location& ant : myAnts ) {
+		if( gridToAnt[ ant.row ][ ant.col ] == -1 ) {
+
+			// new ant found
+			gridToAnt[ ant.row ][ ant.col ] = antMaxID;
+			myAntsWithRoles.push_back( rolePtr( new Role*( MyBot.createAnt( antMaxID, ant ) ) ) );
+			antMaxID++;
+			antCnt++;
+		}
+	}
 
 	for ( const auto& antPtr : myAntsWithRoles ) {
 
@@ -123,17 +139,6 @@ void MyState::updateState( void ) {
 			} else {
 				break;
 			}
-		}
-	}
-
-	for( const Location& hill : myHills ) {
-		if( getGrid( hill ).ant != 0 and gridToAnt[ hill.row ][ hill.col ] == -1 ) {
-
-			// new ant found
-			gridToAnt[ hill.row ][ hill.col ] = antMaxID;
-			myAntsWithRoles.push_back( rolePtr( new Role*( new Role( MyBot.createAnt( antMaxID, hill ) ) ) ) );
-			antMaxID++;
-			antCnt++;
 		}
 	}
 }

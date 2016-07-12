@@ -46,8 +46,8 @@ public:
 
     bool isAnt( const Location ) const;
 
-    Square& getGrid(const Location &loc);
-
+    Square& getGrid(const Location loc);
+    bool isGridEmpty( const Location loc );
     // constructor
     MyState( Bot& );
 };
