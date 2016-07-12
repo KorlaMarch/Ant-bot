@@ -1,10 +1,10 @@
 #include "Gather.h"
 
-Gather::Gather(State _state, int _id = 0, int _x = 0, int _y = 0, int _anchorX = 0, int _anchorY = 0) : Role(State() _state(), _id, _x, _y){
+Gather::Gather(MyState& _state, int _id, int _x, int _y, int _anchorX, int _anchorY) : Role(_state, _id, _x, _y){
     anchorX = _anchorX;
     anchorY = _anchorY;
     LeftTop = Location((anchorX-(int)state().viewradius+state().rows)%state().rows,
-        (anchorY-(int)state().viewradius+state().cols)%state.cols)
+        (anchorY-(int)state().viewradius+state().cols)%state().cols);
 }
 
 // ===================== Dis vector manipulate =====================
@@ -12,12 +12,12 @@ Gather::Gather(State _state, int _id = 0, int _x = 0, int _y = 0, int _anchorX =
 void Gather::clearDis(int offX, int offY, int rsize, int csize){
     disOffX = offX;
     disOffY = offY;
-    dis.assign(rsize,std::vector(csize,-1));
+    dis.assign(rsize,std::vector<int>(csize,-1));
 }
 
 //Get true index on Dis
 Location Gather::getDisIndex(Location loc){
-    return Location((loc.row-disOffX+state().rows)%state().rows,(loc.col-disOffY+state().cols)%state.cols);
+    return Location((loc.row-disOffX+state().rows)%state().rows,(loc.col-disOffY+state().cols)%state().cols);
 }
 
 int Gather::getDis(Location loc){
@@ -50,8 +50,8 @@ bool Gather::bfs_checkLoc(Location loc){
 int Gather::bfsFood(Location currentLoc){
     std::queue<Location> qu;
     clearDis(LeftTop.row,LeftTop.col,2*(int)state().viewradius+2,2*(int)state().viewradius+2);
-    qu.push_back(currentLoc);
-    setDis(loc,0);
+    qu.push(currentLoc);
+    setDis(currentLoc,0);
     while(!qu.empty())
     {
         auto loc = qu.front();
@@ -66,7 +66,7 @@ int Gather::bfsFood(Location currentLoc){
 
         for(int i = 0; i < TDIRECTIONS; i++){
             Location newloc = state().getLocation(loc,i);
-            if(checkLoc(newloc))
+            if(bfs_checkLoc(newloc))
             {
                 setDis(newloc,newd);
                 qu.push(newloc);
@@ -74,6 +74,6 @@ int Gather::bfsFood(Location currentLoc){
         }
     }
     //no food found -> return to anchor
-    //return pathfinder.getDirection(currentLoc,Location(anchorX,anchorY));
+    //return Pathfinder.getDirection(currentLoc,Location(anchorX,anchorY));
     return 0; //tmp
 }
