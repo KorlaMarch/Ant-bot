@@ -69,21 +69,19 @@ void MyState::updateState( void ) {
 		// add new ants that are at the border of its vision
 		{
 
-			const int r = rows;
-			const int c = cols;
 			const int offset = 3;
-			int posx = ( ant.getLocation().row - (int) viewradius + r ) % r;
+			int posx = ( ant.getLocation().row - (int) viewradius + rows ) % rows;
 			int posy = ant.getLocation().col;
 			int dx = -1, dy = 1;
 
 			for ( int i = 0 ; i < 4 * viewradius ; i++ ) {
 
 				while ( distance( ant.getLocation(), Location( posx, posy ) ) > viewradius ) {
-					posy = ( posy + dy + c ) % c;
+					posy = ( posy + dy + cols ) % cols;
 				} 
 
 				for ( int j = 0 ; j < offset ; j++ ) {
-					int nposy = ( posx + offset * dy + c ) % c;
+					int nposy = ( posx + offset * dy + cols ) % cols;
 					if ( distance( ant.getLocation(), Location( posx, nposy ) ) <= viewradius and gridToAnt[ posx ][ nposy ] != -1 ) {
 						int antID = gridToAnt[ posx ][ nposy ];
 						if ( std::find( vec.begin(), vec.end(), antID ) == vec.end() ) {
@@ -92,7 +90,7 @@ void MyState::updateState( void ) {
 					}
 				}
 
-				posx = ( posx + dx + 1 ) % r;
+				posx = ( posx + dx + 1 ) % rows;
 				if ( i == viewradius ) {
 					dx = -1;
 					dy = -1;
