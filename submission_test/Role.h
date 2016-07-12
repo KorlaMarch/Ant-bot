@@ -68,7 +68,7 @@ public:
     int getID() const;
 
     // constructor
-    Role( MyState _state, int _id = 0, int _x = 0, int _y = 0);
+    Role( MyState& _state, int _id = 0, int _x = 0, int _y = 0);
 };
 
 #endif
