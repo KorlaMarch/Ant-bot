@@ -3,6 +3,7 @@
 #include "Bot.h"
 #include "Square.h"
 
+#include <iostream>
 #include <algorithm>
 #include <memory>
 
@@ -32,7 +33,7 @@ Square& MyState::getGrid(const Location loc) {
 }
 bool MyState::isGridEmpty(const Location loc ) {
 	const auto &grid = getGrid( loc );
-	return ( not grid.isWater ) and ( grid.ant == -1 ) and ( not grid.isHill );
+	return ( not grid.isWater ) and ( not grid.isHill ) and ( grid.ant == -1 );
 }
 int MyState::getAntSize( void ) const {
 	return antCnt;
@@ -50,10 +51,20 @@ void MyState::run( void ) {
 	}
 }
 
+void MyState::makeMove( const Location &loc, int direction )
+{
+    std::cout << "o " << loc.row << " " << loc.col << " " << CDIRECTIONS[direction] << std::endl;
+
+    Location nLoc = getLocation(loc, direction);
+    grid[nLoc.row][nLoc.col].ant = grid[loc.row][loc.col].ant;
+    grid[loc.row][loc.col].ant = -1;
+
+    gridToAnt[ nLoc.row ][ nLoc.col ] = gridToAnt[ loc.row ][ loc.col ];
+    gridToAnt[ loc.row ][ loc.col ] = -1;
+};
+
 void MyState::updateState( void ) {
 
-	bug << "updateState()" << std::endl;
-	
 	updateVisionInformation();
 
 	for( const Location& ant : myAnts ) {

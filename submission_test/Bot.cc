@@ -1,5 +1,6 @@
 #include "Bot.h"
 #include "Gather.h"
+#include "Hunter.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ void Bot::makeMoves()
 };
 
 Role* Bot::createAnt( int antID, const Location loc ) {
-    return new Gather( state(), antID, loc.row, loc.col, loc.row, loc.col );
+    return new Hunter( state(), antID, loc.row, loc.col );
 }
 //finishes the turn
 void Bot::endTurn()

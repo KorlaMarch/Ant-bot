@@ -32,6 +32,9 @@ public:
 
     // run function
     void run();
+
+    // makemove function ( overide from State )
+    void makeMove( const Location &loc, int direction );
     
 	// update functions	
 	void updateState(void);

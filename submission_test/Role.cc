@@ -33,6 +33,7 @@ void Role::run( void ) {
 	if ( 0 <= dir and dir < TDIRECTIONS ) {
 
 		const Location nwloc = state().getLocation( getLocation(), dir );
+		
 		if ( state().isGridEmpty( nwloc ) ) {		
 	    	state().makeMove( getLocation(), dir );
 	    	x = nwloc.row;
