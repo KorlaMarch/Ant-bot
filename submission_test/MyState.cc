@@ -19,6 +19,14 @@ Role& MyState::getAnt( const int id ) const {
 Role& MyState::getAnt( const rolePtr& ant ) const {
 	return **ant;
 }
+Role& MyState::getAnt( const Location loc ) const {
+	return getAnt( gridToAnt[ loc.row ][ loc.col ] );
+}
+
+bool MyState::isAnt( const Location loc ) const {
+	return gridToAnt[ loc.row ][ loc.col ] != -1;
+}
+
 Square& MyState::getGrid(const Location &loc) {
     return grid[ loc.row ][ loc.col ];
 }
@@ -50,7 +58,6 @@ void MyState::updateState( void ) {
 		if ( getGrid( ant.getLocation() ).ant != 0 ) {
 			// this ant is dead
 			ant.die(); 
-
 		}
 	}
 

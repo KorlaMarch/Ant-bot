@@ -38,10 +38,14 @@ public:
     
     // helper functions
     void antDie( int antID );
-
     int getAntSize( void ) const;
+
     Role& getAnt( const int ) const ;
     Role& getAnt( const rolePtr& ) const;
+    Role& getAnt( const Location ) const;
+
+    bool isAnt( const Location ) const;
+
     Square& getGrid(const Location &loc);
 
     // constructor
