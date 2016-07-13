@@ -40,6 +40,9 @@ public:
 	void updateState(void);
     
     // helper functions
+
+    int getOppositeDirection( int );
+
     void antDie( int antID );
     int getAntSize( void ) const;
 

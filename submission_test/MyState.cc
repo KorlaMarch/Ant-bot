@@ -8,6 +8,10 @@
 #include <memory>
 
 // helper functions
+
+int MyState::getOppositeDirection( int dir ) {
+	return ( dir + 2 ) % TDIRECTIONS;
+}
 void MyState::antDie( int antID ) {
 	// antID just die
 	if ( not getAnt( antID ).isDead() ) {
@@ -33,7 +37,7 @@ Square& MyState::getGrid(const Location loc) {
 }
 bool MyState::isGridEmpty(const Location loc ) {
 	const auto &grid = getGrid( loc );
-	return ( not grid.isWater ) and ( not grid.isHill ) and ( grid.ant == -1 );
+	return ( not grid.isWater ) and ( not grid.isHill ) and ( grid.isVisible ) and ( grid.ant == -1 );
 }
 int MyState::getAntSize( void ) const {
 	return antCnt;
@@ -66,6 +70,10 @@ void MyState::makeMove( const Location &loc, int direction )
 void MyState::updateState( void ) {
 
 	updateVisionInformation();
+
+	for( const Location& food_loc : food ) {
+		getGrid( food_loc ).isFood = true;
+	}
 
 	for( const Location& ant : myAnts ) {
 		if( gridToAnt[ ant.row ][ ant.col ] == -1 ) {
