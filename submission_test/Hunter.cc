@@ -49,7 +49,7 @@ int Hunter::move ( void ) {
 
 	// if the object is found, move towards it
 	if ( dest != getLocation() ) {
-		return state().pathfinder().getDirection( getLocation(), dest );
+		return state().pathfinder().getDirectionBFS( getLocation(), dest );
 	}
 
 	// if the target is not found, the ant will go straight

@@ -11,6 +11,7 @@ the path is calulated by using A* search
 #include "MyState.h"
 
 #include <vector>
+#include <string>
 
 class MyState;
 
@@ -48,16 +49,18 @@ class Pathfinder {
 
 		// set up function
 		void setup( void );
-		
+
 		// helper function
 		inline MyState& state( void );
 
 		// constructor
 		Pathfinder( MyState& _mystate );
 
-		// return direction that will move closer to the destination
-		int getDirection( const Location& source, const Location& destination );
+		// return the string of move sequence
+		std::string getDirectionAstar( const Location& source, const Location& destination );
 
+		// return direction that will move closer to the destination
+		int getDirectionBFS( const Location& source, const Location& destination );
 
 };
 

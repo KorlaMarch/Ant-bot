@@ -2,9 +2,11 @@
 #include "Location.h"
 #include "MyState.h"
 
-#include <queue>
-#include <vector>
+#include <algorithm>
 #include <functional>
+#include <queue>
+#include <string>
+#include <vector>
 
 Pathfinder::SearchState::SearchState( const Location& _loc, int _dis ) : loc( _loc ), dis( _dis ) {}
 
@@ -30,12 +32,12 @@ int Pathfinder::heuristic( const Location &source, const Location &destination )
 	return dx + dy;
 }
 
-int Pathfinder::getDirection( const Location &source, const Location &destination ) {
+std::string Pathfinder::getDirectionAstar( const Location &source, const Location &destination ) {
 
 	// A* search
 
 	if ( state().getGrid( source ).isWater ) {
-		return -1;
+		return "";
 	}
 
 
@@ -44,9 +46,6 @@ int Pathfinder::getDirection( const Location &source, const Location &destinatio
 	};
 
 	std::priority_queue< SearchState, std::vector< SearchState >, decltype( compare_heuristic_function ) > heap( compare_heuristic_function );
-
-	state().bug << "source : " << source.row << " " << source.col << " " << std::endl;
-	state().bug << "destination : " << destination.row << " " << destination.col << " " << std::endl;
 
 	getDistance( source ) = { ID, 0 };
 	heap.push( SearchState( source ) );
@@ -76,9 +75,79 @@ int Pathfinder::getDirection( const Location &source, const Location &destinatio
 		}
 	}
 
+	std::string direction = "";
+		
+	if ( getDistance( destination ).first == ID ) {
+		// the path is found
+		Location loc = destination;
+		while ( loc != source ) {
+			
+			for ( int dir = 0 ; dir < TDIRECTIONS ; ++ dir ) {
+
+				const Location nLoc = state().getLocation( loc, dir );
+				
+				if ( getDistance( nLoc ).first == ID and getDistance( loc ).second == getDistance( nLoc ).second + 1 ) {
+					loc = nLoc;
+					direction += state().getOppositeDirection( dir );
+				}
+			}
+		}
+
+		std::reverse( direction.begin(), direction.end() );
+	}
+
+	// increase the ID
+	ID++;
+
+	return direction;
+}
+
+
+int Pathfinder::getDirectionBFS( const Location &source, const Location &destination ) {
+
+	// BFS search
+
+	if ( state().getGrid( source ).isWater ) {
+		return -1;
+	}
+
+
+	auto compare_heuristic_function = [&] ( SearchState s1, SearchState s2 ) {
+		return s1.dis + heuristic( s1.loc, destination ) > s2.dis + heuristic( s2.loc, destination );
+	};
+
+	std::queue< SearchState > que;
+
+	getDistance( source ) = { ID, 0 };
+	que.push( SearchState( source ) );
+	
+
+	while ( not que.empty() ) {
+
+		SearchState bestState = que.front();
+		que.pop();
+
+		if ( bestState.loc == destination ) {
+			break;
+		}
+
+		for ( int dir = 0 ; dir < TDIRECTIONS ; ++dir ) {
+
+			const Location nLoc = state().getLocation( bestState.loc, dir );
+
+			if ( getDistance( nLoc ).first == ID ) {
+				continue;
+			}
+
+			if ( state().isGridEmpty( nLoc ) or state().getGrid( nLoc ).isFood ) {
+				getDistance( nLoc ) = { ID, getDistance( bestState.loc ).second + 1 };
+				que.push( SearchState( nLoc, getDistance( nLoc ).second ) );
+			}
+		}
+	}
 
 	int direction = -1;
-	
+		
 	if ( getDistance( destination ).first == ID ) {
 		// the path is found
 		Location loc = destination;
@@ -95,8 +164,6 @@ int Pathfinder::getDirection( const Location &source, const Location &destinatio
 			}
 		}
 	}
-
-	state().bug << direction << std::endl;
 
 	// increase the ID
 	ID++;
