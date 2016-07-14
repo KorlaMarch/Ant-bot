@@ -54,7 +54,7 @@ int Gather::bfsFood(Location currentLoc){
     setDis(currentLoc,0);
     while(!qu.empty())
     {
-        auto loc = qu.front();
+        Location loc = qu.front();
         
         if(state().getGrid(loc).isFood){
             //return Pathfinder.getDirection(currentLoc,loc);
