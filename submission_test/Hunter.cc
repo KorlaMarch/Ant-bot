@@ -22,7 +22,7 @@ int Hunter::move ( void ) {
 		const Location current = que.front();
 		que.pop();
 
-		if ( dis[ current ] > state().viewradius ) {
+		if ( dis[ current ] > state().viewradius2 ) {
 			continue;
 		}
 
@@ -50,8 +50,6 @@ int Hunter::move ( void ) {
 	// if the object is found, move towards it
 	if ( dest != getLocation() ) {
 		
-		state().bug << " food found " << std::endl;
-
 		int dir = -1;
 		while ( dest != getLocation() ) {
 			for ( int d = 0 ; d < TDIRECTIONS ; d++ ) {
@@ -65,7 +63,6 @@ int Hunter::move ( void ) {
 				}
 			}
 		}
-		state().bug << " dir = " << dir << std::endl;
 		return dir;
 	}
 
