@@ -32,21 +32,20 @@ bool MyState::isAnt( const Location loc ) const {
 	return gridToAnt[ loc.row ][ loc.col ] != -1;
 }
 
-Square& MyState::getGrid(const Location loc) {
+Square& MyState::getGrid( const Location loc ) {
     return grid[ loc.row ][ loc.col ];
 }
-bool MyState::isGridEmpty(const Location loc ) {
+bool MyState::isGridEmpty( const Location loc ) {
 	const auto &grid = getGrid( loc );
-	return ( not grid.isWater ) and ( not grid.isHill ) and ( grid.isVisible ) and ( grid.ant == -1 );
+	return ( not grid.isWater ) and ( not grid.isFood ) and ( ( not grid.isHill ) or ( grid.hillPlayer > 0 ) ) and ( grid.isVisible ) and ( grid.ant != 0 );
 }
 int MyState::getAntSize( void ) const {
 	return antCnt;
 }
 
-void MyState::setup()
-{
-    grid = std::vector< std::vector<Square> >(rows, std::vector<Square>(cols, Square()));
-    gridToAnt = std::vector< std::vector<int> >(rows, std::vector<int>(cols, -1) );
+void MyState::setup() {
+    grid = std::vector< std::vector<Square> >( rows, std::vector<Square>( cols, Square() ) );
+    gridToAnt = std::vector< std::vector<int> >( rows, std::vector<int>( cols, -1) );
 }
 
 void MyState::run( void ) {
@@ -55,16 +54,19 @@ void MyState::run( void ) {
 	}
 }
 
-void MyState::makeMove( const Location &loc, int direction )
-{
+void MyState::makeMove( const Location &loc, int direction ) {
+
+    Location nLoc = getLocation( loc, direction );
+
+    // check the valiadtion of the command
+    if ( !isGridEmpty( nLoc ) or ( getGrid( loc ).ant != 0 ) ) { 
+    	return;
+    }
+    
     std::cout << "o " << loc.row << " " << loc.col << " " << CDIRECTIONS[direction] << std::endl;
-
-    Location nLoc = getLocation(loc, direction);
-    grid[nLoc.row][nLoc.col].ant = grid[loc.row][loc.col].ant;
-    grid[loc.row][loc.col].ant = -1;
-
-    gridToAnt[ nLoc.row ][ nLoc.col ] = gridToAnt[ loc.row ][ loc.col ];
-    gridToAnt[ loc.row ][ loc.col ] = -1;
+    
+    std::swap( getGrid( loc ).ant, getGrid( nLoc ).ant );
+    std::swap( gridToAnt[ nLoc.row ][ nLoc.col ], gridToAnt[ loc.row ][ loc.col ] );
 };
 
 void MyState::updateState( void ) {
@@ -93,6 +95,7 @@ void MyState::updateState( void ) {
 		if ( getGrid( ant.getLocation() ).ant != 0 ) {
 			// this ant is dead
 			ant.die(); 
+			gridToAnt[ ant.getLocation().row ][ ant.getLocation().col ] = -1;
 		}
 	}
 
