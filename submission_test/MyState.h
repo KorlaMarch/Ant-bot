@@ -13,10 +13,11 @@ class Bot;
 
 class MyState : public State {
 
+	typedef std::unique_ptr< Role* > rolePtr;
+
 private: 
 
-	Bot& MyBot;
-	typedef std::unique_ptr< Role* > rolePtr;
+    Bot& MyBot;
 
 	int antCnt;
     int antMaxID;
@@ -52,8 +53,9 @@ public:
 
     bool isAnt( const Location ) const;
 
-    Square& getGrid(const Location loc);
+    Square& getGrid( const Location loc );
     bool isGridEmpty( const Location loc );
+
     // constructor
     MyState( Bot& );
 };

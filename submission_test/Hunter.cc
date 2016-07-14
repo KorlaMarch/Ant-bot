@@ -8,7 +8,7 @@
 int Hunter::move ( void ) {
 
 	// search for anything thereby
-	// by using very inefficient searching BFS
+	// by using very inefficient BFS
 	std::map< Location, int > dis;
 	dis.clear();
 	std::queue< Location > que;
@@ -16,21 +16,18 @@ int Hunter::move ( void ) {
 	dis[ getLocation() ] = 0;
 	que.push( getLocation() );
 
-	state().bug << " ANT " << getLocation().row << " " << getLocation().col << std::endl;
-
 	Location dest = getLocation();
 	while ( not que.empty() ) {
 
 		const Location current = que.front();
 		que.pop();
 
-		const auto grid = state().getGrid( current );
-
 		if ( dis[ current ] > state().viewradius ) {
 			continue;
 		}
 
-		if ( state().getGrid( current ).isFood ) {
+		const auto& grid = state().getGrid( current );
+		if ( grid.isFood or ( grid.isHill and grid.hillPlayer > 0 ) or grid.ant > 0 ) {
 			dest = current;
 			break;
 		}
@@ -39,7 +36,7 @@ int Hunter::move ( void ) {
 			
 			Location nwloc = state().getLocation( current, dir );
 		
-			if ( not state().isGridEmpty( nwloc ) ) {
+			if ( ( not state().getGrid( nwloc ).isFood ) and ( not state().isGridEmpty( nwloc ) ) ) {
 				continue;
 			}	
 
