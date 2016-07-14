@@ -22,7 +22,7 @@ int Hunter::move ( void ) {
 		const Location current = que.front();
 		que.pop();
 
-		if ( dis[ current ] > state().viewradius2 ) {
+		if ( dis[ current ] > viewradius ) {
 			continue;
 		}
 
@@ -49,21 +49,7 @@ int Hunter::move ( void ) {
 
 	// if the object is found, move towards it
 	if ( dest != getLocation() ) {
-		
-		int dir = -1;
-		while ( dest != getLocation() ) {
-			for ( int d = 0 ; d < TDIRECTIONS ; d++ ) {
-
-				Location nwloc = state().getLocation( dest, d );
-
-				if ( dis.find( nwloc ) != dis.end() and dis[ nwloc ] + 1 == dis[ dest ] ) {
-					dest = nwloc;
-					dir = state().getOppositeDirection( d );
-					break;
-				}
-			}
-		}
-		return dir;
+		return state().pathfinder().getDirection( getLocation(), dest );
 	}
 
 	// if the target is not found, the ant will go straight
@@ -77,4 +63,4 @@ int Hunter::move ( void ) {
 	return direction;
 }
 
-Hunter::Hunter( MyState& _state, int _id, int _x , int _y ) : Role( _state, _id, _x, _y ), direction( rand() % TDIRECTIONS ) {}
+Hunter::Hunter( MyState& _state, int _id, int _x , int _y, int _viewradius ) : Role( _state, _id, _x, _y ), viewradius( _viewradius ), direction( rand() % TDIRECTIONS ) {}

@@ -6,10 +6,12 @@
 #include "Bot.h"
 
 #include <memory>
+#include <vector>
 
 // forward declaration
-class Role;
 class Bot;
+class Pathfinder;
+class Role;
 
 class MyState : public State {
 
@@ -22,12 +24,18 @@ private:
 	int antCnt;
     int antMaxID;
 
+    // path finder
+    std::unique_ptr< Pathfinder* > PathFinder;
+
 public:
 
 	// the ants
 	std::vector< std::vector< int > > gridToAnt;
 	std::vector< rolePtr > myAntsWithRoles;
 
+    // pathfinder
+    Pathfinder& pathfinder( void );
+    
 	// setup function
     void setup();
 
@@ -49,15 +57,19 @@ public:
 
     Role& getAnt( const int ) const ;
     Role& getAnt( const rolePtr& ) const;
-    Role& getAnt( const Location ) const;
+    Role& getAnt( const Location& ) const;
 
-    bool isAnt( const Location ) const;
+    bool isAnt( const Location& ) const;
 
-    Square& getGrid( const Location loc );
-    bool isGridEmpty( const Location loc );
+    Square& getGrid( const Location& loc );
+    Square& operator[]( const Location& loc );
+
+    bool isGridEmpty( const Location& loc );
 
     // constructor
     MyState( Bot& );
+
+
 };
 
 #endif

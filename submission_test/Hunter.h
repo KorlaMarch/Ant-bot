@@ -7,10 +7,11 @@ class Hunter : public Role {
 
 	public:
 
+		int viewradius;
 		int direction;
 		
 		int move(void);
-		Hunter( MyState& _state, int _id, int _x , int _y );
+		Hunter( MyState& _state, int _id, int _x , int _y, int _viewradius );
 
 };
 

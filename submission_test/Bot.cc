@@ -5,9 +5,7 @@
 using namespace std;
 
 //constructor
-Bot::Bot() : mystate ( new MyState*( new MyState( *this ) ) )
-{
-};
+Bot::Bot( void ) : mystate ( new MyState*( new MyState( *this ) ) ) {};
 
 MyState& Bot::state( void ) {
     return **mystate;
@@ -40,8 +38,9 @@ void Bot::makeMoves()
 };
 
 Role* Bot::createAnt( int antID, const Location loc ) {
-    return new Hunter( state(), antID, loc.row, loc.col );
+    return new Hunter( state(), antID, loc.row, loc.col, rand() % ( state().viewradius2 - 3 ) + 3 );
 }
+
 //finishes the turn
 void Bot::endTurn()
 {

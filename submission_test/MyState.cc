@@ -1,11 +1,13 @@
-#include "MyState.h"
-#include "Role.h"
 #include "Bot.h"
+#include "MyState.h"
+#include "Pathfinder.h"
+#include "Role.h"
 #include "Square.h"
 
 #include <iostream>
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 // helper functions
 
@@ -18,24 +20,33 @@ void MyState::antDie( int antID ) {
 		antCnt--;
 	}
 }
+
+Pathfinder& MyState::pathfinder( void ) {
+	return **PathFinder;
+}
+
 Role& MyState::getAnt( const int id ) const {
 	return **myAntsWithRoles[id];
 }
 Role& MyState::getAnt( const rolePtr& ant ) const {
 	return **ant;
 }
-Role& MyState::getAnt( const Location loc ) const {
+Role& MyState::getAnt( const Location& loc ) const {
 	return getAnt( gridToAnt[ loc.row ][ loc.col ] );
 }
 
-bool MyState::isAnt( const Location loc ) const {
+bool MyState::isAnt( const Location& loc ) const {
 	return gridToAnt[ loc.row ][ loc.col ] != -1;
 }
 
-Square& MyState::getGrid( const Location loc ) {
+Square& MyState::getGrid( const Location& loc ) {
     return grid[ loc.row ][ loc.col ];
 }
-bool MyState::isGridEmpty( const Location loc ) {
+Square& MyState::operator[]( const Location& loc ) {
+	return grid[ loc.row ][ loc.col ];
+}
+
+bool MyState::isGridEmpty( const Location& loc ) {
 	const auto &grid = getGrid( loc );
 	return ( not grid.isWater ) and ( not grid.isFood ) and ( ( not grid.isHill ) or ( grid.hillPlayer > 0 ) ) and ( grid.isVisible ) and ( grid.ant != 0 );
 }
@@ -46,6 +57,7 @@ int MyState::getAntSize( void ) const {
 void MyState::setup() {
     grid = std::vector< std::vector<Square> >( rows, std::vector<Square>( cols, Square() ) );
     gridToAnt = std::vector< std::vector<int> >( rows, std::vector<int>( cols, -1) );
+    pathfinder().setup();
 }
 
 void MyState::run( void ) {
@@ -54,7 +66,7 @@ void MyState::run( void ) {
 	}
 }
 
-void MyState::makeMove( const Location &loc, int direction ) {
+void MyState::makeMove( const Location& loc, int direction ) {
 
     Location nLoc = getLocation( loc, direction );
 
@@ -165,4 +177,4 @@ void MyState::updateState( void ) {
 	}
 }
 
-MyState::MyState( Bot &mybot ) : MyBot( mybot ), antCnt(0), antMaxID(0) {}
+MyState::MyState( Bot &mybot ) : MyBot( mybot ), PathFinder( new Pathfinder*( new Pathfinder( *this ) ) ), antCnt(0), antMaxID(0) {}
